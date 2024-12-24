@@ -20,7 +20,7 @@ export default function navbar() {
       <Link className="nav-link " to="/Contact">Contact</Link>
       </li>  
       <li class="nav-item">
-      <Link className="nav-link " to="/cart">Login</Link>
+      <Link className="nav-link " to="/login">Login</Link>
       </li>
       <li class="nav-item">
       <Link className="nav-link " to="/cart">Cart</Link>

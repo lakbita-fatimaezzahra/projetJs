@@ -10,6 +10,9 @@ import AboutScreen from './screens/AboutScreen';
 import ContactScreen from './screens/ContactScreen';
 import bootstrap from '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
+import RegisterScreen from './screens/RegisterScreen';
+import LoginScreen from './screens/LoginScreen';
+
 function App() {
   return (
     <div className="App">
@@ -21,10 +24,14 @@ function App() {
           <Route path="/cart" element={<CartScreen />} />
           <Route path="/About" element={<AboutScreen />} />
           <Route path="/Contact" element={<ContactScreen />} />
+
+          <Route path="/register" exact component={RegisterScreen}/>
+          <Route path="/login" exact component={LoginScreen}/>
+
         </Routes>
         <Footer />
       </Router>
-    
+      
     </div>
   );
 }

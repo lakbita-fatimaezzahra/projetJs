@@ -77,3 +77,12 @@ h2{
 .search-button:hover {
   background-color: #b30000;
 }
+
+/* Register's input */
+
+input{
+  margin-top: 10px !important;
+  box-shadow: none !important;
+
+}
+
