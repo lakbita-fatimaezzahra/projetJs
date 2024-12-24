@@ -3,8 +3,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import HomeScreen from './screens/HomeScreen';
 import CartScreen from './screens/CartScreen';
+import AboutScreen from './screens/AboutScreen';
+import ContactScreen from './screens/ContactScreen';
 import bootstrap from '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
@@ -16,8 +19,12 @@ function App() {
           {/* Define routes for HomeScreen and CartScreen */}
           <Route path="/" element={<HomeScreen />} />
           <Route path="/cart" element={<CartScreen />} />
+          <Route path="/About" element={<AboutScreen />} />
+          <Route path="/Contact" element={<ContactScreen />} />
         </Routes>
+        <Footer />
       </Router>
+    
     </div>
   );
 }
