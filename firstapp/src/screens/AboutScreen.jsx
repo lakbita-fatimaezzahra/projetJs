@@ -39,6 +39,7 @@ const AboutUs = () => {
       <div className="about-us-image">
         <img src={pizzaBackground} alt="Pizza savoureuse" className="pizza-image" />
       </div>
+      
     </div>
   );
 };
