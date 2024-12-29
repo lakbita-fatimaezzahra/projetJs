@@ -1,10 +1,13 @@
-import React, { useState } from "react";
-import { Modal } from "react-bootstrap";
+import React, { useState, useContext } from 'react';
+import { Modal } from 'react-bootstrap';
+import { CartContext } from '../context/CartContext';
 
 export default function Pizza({ pizza }) {
     const [quantite, setQuantite] = useState(1);
     const [varient, setVarient] = useState("Petite");
     const [show, setShow] = useState(false);
+
+    const { addToCart } = useContext(CartContext);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -49,10 +52,15 @@ export default function Pizza({ pizza }) {
 
             <div className="flex-container text-start">
                 <div className="m-2 w-100">
-                    <p>Prix:{pizza.prices[0][varient] * quantite}$</p>
+                    <p>Prix: {pizza.prices[0][varient] * quantite}$</p>
                 </div>
                 <div className="m-1 w-100">
-                    <input type="submit" value="Ajouter au panier" className="btn" />
+                    <button
+                        className="btn"
+                        onClick={() => addToCart(pizza, varient, quantite)}
+                    >
+                        Ajouter au panier
+                    </button>
                 </div>
             </div>
 
@@ -63,7 +71,7 @@ export default function Pizza({ pizza }) {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <img src="" alt={pizza.Nom_Pizza} className="img-fluid" style={{ width: "200px", height: "200px" }} />
+                    <img src={pizza.image} alt={pizza.Nom_Pizza} className="img-fluid" style={{ width: "200px", height: "200px" }} />
                     <p>{pizza.description}</p>
                 </Modal.Body>
                 <Modal.Footer>

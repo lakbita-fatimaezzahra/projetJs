@@ -12,25 +12,26 @@ import bootstrap from '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import RegisterScreen from './screens/RegisterScreen';
 import LoginScreen from './screens/LoginScreen';
 
+import { CartProvider } from './context/CartContext';
+
 function App() {
   return (
-    <div className="App">
-      <Router>
-        <Navbar /> {/* Navigation bar will always be displayed */}
-        <Routes>
-          {/* Define routes for HomeScreen and CartScreen */}
-          <Route path="/" element={<HomeScreen />} />
-          <Route path="/cart" element={<CartScreen />} />
-          <Route path="/About" element={<AboutScreen />} />
-          <Route path="/Contact" element={<ContactScreen />} />
-          <Route path="/register" element={<RegisterScreen/>}/>
-          <Route path="/login" element={<LoginScreen/>}/>
-
-        </Routes>
-        <Footer />
-      </Router>
-      
-    </div>
+    <CartProvider>
+      <div className="App">
+        <Router>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<HomeScreen />} />
+            <Route path="/cart" element={<CartScreen />} />
+            <Route path="/About" element={<AboutScreen />} />
+            <Route path="/Contact" element={<ContactScreen />} />
+            <Route path="/register" element={<RegisterScreen />} />
+            <Route path="/login" element={<LoginScreen />} />
+          </Routes>
+          <Footer />
+        </Router>
+      </div>
+    </CartProvider>
   );
 }
 

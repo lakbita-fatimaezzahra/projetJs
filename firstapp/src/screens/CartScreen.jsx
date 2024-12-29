@@ -1,100 +1,163 @@
-import React from 'react';
-import './style.css';
-import pizzaBackground from "./images/pizza.webp";
+import React, { useContext, useState } from "react";
+import { CartContext } from "../context/CartContext";
+import axios from "axios";
+import "./style.css";
+
 export default function CartScreen() {
-  return (
-    <div style={{ marginTop: '90px',marginBottom:'40px' }}>
-      <div className="cart-container">
-        {/* Header */}
-        <div className="cart-header">
-          <h1>Votre Panier</h1>
-          <p>3 articles</p>
-        </div>
+    const { cartItems, updateQuantity, removeItem, clearCart } = useContext(CartContext);
+    const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+    const [showLogin, setShowLogin] = useState(false);
+    const [userId, setUserId] = useState(null);
 
-        {/* Produits */}
-        <div className="cart-item">
-          <div className="item-details">
-            <img src={pizzaBackground} alt="Produit" />
-            <div>
-              <p className="name">Produit A</p>
+    const total = cartItems.reduce(
+        (sum, item) => sum + item.prices[0][item.varient] * item.quantite,
+        0
+    );
+
+    const handleValidation = () => {
+        if (isUserLoggedIn) {
+            submitOrder();
+        } else {
+            setShowLogin(true);
+        }
+    };
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        const username = e.target.username.value;
+        const password = e.target.password.value;
+
+        try {
+            const response = await axios.post("http://localhost/emsi/projetJs/firstapp/back_end/login.php", {
+                username,
+                password,
+            });
+           
+            if (response.data.success) {
+              
+                setIsUserLoggedIn(true);
+                setUserId(response.data.userId);
+                setShowLogin(false);
+                alert("Connexion réussie ! Vous pouvez valider votre commande.");
+            } else {
+                alert("Échec de la connexion. Veuillez vérifier vos identifiants.");
+            }
+        } catch (error) {
+            console.error("Erreur:", error);
+        }
+    };
+
+    const submitOrder = async () => {
+      const order = {
+          userId,
+          total,
+          items: cartItems.map((item) => ({
+              pizzaId: item.id,
+              variant: item.varient,
+              quantity: item.quantite,
+              price: item.prices[0][item.varient],
+          })),
+      };
+  
+      try {
+          const response = await axios.post("http://localhost/emsi/projetJs/firstapp/back_end/add_to_cart.php", order);
+          
+          if (response.data.success) {
+              alert("Commande validée avec succès !");
+              window.location.href = '/'; // Rediriger vers la page d'accueil après la commande réussie
+          } else {
+              alert("Erreur lors de la validation de la commande.");
+          }
+      } catch (error) {
+          console.error("Erreur:", error);
+          alert("Une erreur s'est produite, veuillez réessayer.");
+      }
+  };
+  
+    return (
+        <div style={{ marginTop: "90px", marginBottom: "40px" }}>
+            <div className="cart-container">
+                <div className="cart-header">
+                    <h1>Votre Panier</h1>
+                    <p>{cartItems.length} articles</p>
+                </div>
+
+                {cartItems.map((item, index) => (
+                    <React.Fragment key={index}>
+                        <div className="cart-item">
+                            <div className="item-details">
+                                <img src={item.image} alt={item.Nom_Pizza} />
+                                <div>
+                                    <p className="name">{item.Nom_Pizza}</p>
+                                </div>
+                            </div>
+                            <div className="col">
+                                <p className="description">{item.description || "Description non disponible"}</p>
+                            </div>
+                            <div className="col">
+                                <p className="size">{item.varient}</p>
+                            </div>
+                            <div className="col">
+                                <button
+                                    onClick={() => updateQuantity(item, item.quantite - 1)}
+                                    className="quantity-btn"
+                                    disabled={item.quantite <= 1}
+                                >
+                                    -
+                                </button>
+                                <span className="quantity">{item.quantite}</span>
+                                <button
+                                    onClick={() => updateQuantity(item, item.quantite + 1)}
+                                    className="quantity-btn"
+                                >
+                                    +
+                                </button>
+                            </div>
+                            <div className="col">
+                                &euro; {item.prices[0][item.varient] * item.quantite}
+                                <span
+                                    className="close"
+                                    onClick={() => removeItem(item)}
+                                    style={{ marginLeft: "10px", cursor: "pointer" }}
+                                >
+                                    &#10005;
+                                </span>
+                            </div>
+                        </div>
+                        {index < cartItems.length - 1 && <hr className="separator" />}
+                    </React.Fragment>
+                ))}
+
+                <div className="cart-total">Total : &euro; {total.toFixed(2)}</div>
+                <button className="checkout-btn" onClick={handleValidation}>
+                    Validation
+                </button>
+
+                {showLogin && (
+                    <div className="login-modal">
+                        <h2>Connexion requise</h2>
+                        <form onSubmit={handleLogin}>
+                            <input
+                                type="text"
+                                placeholder="Nom d'utilisateur"
+                                required
+                                className="login-input"
+                                name='username'
+                            />
+                            <input
+                                type="password"
+                                placeholder="Mot de passe"
+                                required
+                                className="login-input"
+                                name='password'
+                            />
+                            <button type="submit" className="login-btn">
+                                Se connecter
+                            </button>
+                        </form>
+                    </div>
+                )}
             </div>
-          </div>
-          <div className="col">
-            <p className="description">Description</p>
-          </div>
-          <div className="col">
-            <p className="size">Taille</p>
-          </div>
-          <div className="col">
-            <a href="#">-</a>
-            <a href="#" className="border">1</a>
-            <a href="#">+</a>
-          </div>
-          <div className="col">
-            &euro; 44,00 <span className="close">&#10005;</span>
-          </div>
         </div>
-
-        {/* Séparateur */}
-        <hr className="separator" />
-
-        <div className="cart-item">
-          <div className="item-details">
-            <img src={pizzaBackground} alt="Produit" />
-            <div>
-              <p className="name">Produit B</p>
-            </div>
-          </div>
-          <div className="col">
-            <p className="description">Description</p>
-          </div>
-          <div className="col">
-            <p className="size">Taille</p>
-          </div>
-          <div className="col">
-            <a href="#">-</a>
-            <a href="#" className="border">1</a>
-            <a href="#">+</a>
-          </div>
-          <div className="col">
-            &euro; 44,00 <span className="close">&#10005;</span>
-          </div>
-        </div>
-
-        {/* Séparateur */}
-        <hr className="separator" />
-
-        <div className="cart-item">
-          <div className="item-details">
-            <img src={pizzaBackground} alt="Produit" />
-            <div>
-              <p className="name">Produit C</p>
-            </div>
-          </div>
-          <div className="col">
-            <p className="description">Description</p>
-          </div>
-          <div className="col">
-            <p className="size">Taille</p>
-          </div>
-          <div className="col">
-            <a href="#">-</a>
-            <a href="#" className="border">1</a>
-            <a href="#">+</a>
-          </div>
-          <div className="col">
-            &euro; 10,00 <span className="close">&#10005;</span>
-          </div>
-        </div>
-
-        {/* Total */}
-        <div className="cart-total">
-          Total : &euro; 98,00
-        </div>
-
-        {/* Bouton de validation */}
-        <button className="checkout-btn">Validation</button>
-      </div>
-    </div>
-  );
+    );
 }
