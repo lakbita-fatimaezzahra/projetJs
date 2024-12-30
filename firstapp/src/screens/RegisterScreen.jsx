@@ -25,7 +25,7 @@ export default function RegisterScreen() {
                     <div className="col-md-5 mt-5 text-left">
                         <h2 className="text-center m-2" style={{ fontSize: '35px' }}>Register</h2>
                         <div>
-                            <input required type="text" name="name" placeholder="Name" className="form-control" />
+                            <input required name="name" placeholder="Name" className="form-control" />
                             <input required type="text" name="email" placeholder="Email" className="form-control" />
                             <input required type="password" name="password" placeholder="Password" className="form-control" />
                             <input required type="password" name="confirm_password" placeholder="Confirm Password" className="form-control" />
