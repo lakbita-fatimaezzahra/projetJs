@@ -1,19 +1,29 @@
-<?php
+<?php 
 include('connection.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $input = json_decode(file_get_contents("php://input"), true);
 
     // Récupérer les informations de l'utilisateur
-    $username = $input['username'];
+    $email = $input['email']; // Correction : Utiliser "email"
     $password = $input['password'];
 
     // Vérifier si l'utilisateur existe
+<<<<<<< HEAD
     $stmt = $conn->prepare("SELECT id, email, password FROM clients WHERE email = ?");
     $stmt->bind_param("s", $username);
+=======
+    $stmt = $conn->prepare("SELECT id, email FROM clients WHERE email = ? AND password = ?");
+    $stmt->bind_param("ss", $email, $password); // Vérifiez les colonnes email et password
+>>>>>>> refs/remotes/origin/main
     $stmt->execute();
     $result = $stmt->get_result();
 
+    if (!isset($input['email']) || !isset($input['password'])) {
+        echo json_encode(["success" => false, "message" => "Données manquantes"]);
+        exit;
+    }
+    
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
         
@@ -35,4 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     echo json_encode(["success" => false, "message" => "Méthode non autorisée"]);
 }
+<<<<<<< HEAD
 ?>
+=======
+>>>>>>> refs/remotes/origin/main

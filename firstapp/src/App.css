@@ -45,6 +45,7 @@ html, body {
     transform: rotate(360deg);
   }
 }
+<<<<<<< HEAD
 main {
   flex: 1; /* Pushes the footer to the bottom if content is less than the viewport height */
 }
@@ -52,3 +53,8 @@ main {
 footer {
   margin-top: auto; /* Ensures footer is at the bottom of the page */
 }
+=======
+
+
+
+>>>>>>> refs/remotes/origin/main
