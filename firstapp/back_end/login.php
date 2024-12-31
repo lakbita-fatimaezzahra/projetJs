@@ -1,51 +1,47 @@
-<?php 
+<?php
 include('connection.php');
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $input = json_decode(file_get_contents("php://input"), true);
+header('Content-Type: application/json');
 
-    // Récupérer les informations de l'utilisateur
-    $email = $input['email']; // Correction : Utiliser "email"
-    $password = $input['password'];
+try {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $input = json_decode(file_get_contents("php://input"), true);
 
-    // Vérifier si l'utilisateur existe
-<<<<<<< HEAD
-    $stmt = $conn->prepare("SELECT id, email, password FROM clients WHERE email = ?");
-    $stmt->bind_param("s", $username);
-=======
-    $stmt = $conn->prepare("SELECT id, email FROM clients WHERE email = ? AND password = ?");
-    $stmt->bind_param("ss", $email, $password); // Vérifiez les colonnes email et password
->>>>>>> refs/remotes/origin/main
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if (!isset($input['email']) || !isset($input['password'])) {
-        echo json_encode(["success" => false, "message" => "Données manquantes"]);
-        exit;
-    }
-    
-    if ($result->num_rows > 0) {
-        $user = $result->fetch_assoc();
-        
-        // Vérifier le mot de passe avec password_verify
-        if (password_verify($password, $user['password'])) {
-            // Connexion réussie, retourner l'id de l'utilisateur
-            echo json_encode(["success" => true, "userId" => $user['id']]);
-        } else {
-            // Mot de passe incorrect
-            echo json_encode(["success" => false, "message" => "Mot de passe incorrect"]);
+        // Vérification des données reçues
+        if (empty($input['username']) || empty($input['password'])) {
+            echo json_encode(["success" => false, "message" => "Veuillez fournir un email et un mot de passe."]);
+            exit;
         }
-    } else {
-        // Utilisateur introuvable
-        echo json_encode(["success" => false, "message" => "Identifiants incorrects"]);
-    }
 
-    $stmt->close();
+        $username = filter_var($input['username'], FILTER_SANITIZE_EMAIL);
+        $password = $input['password'];
+
+        // Vérifier si l'utilisateur existe
+        $stmt = $conn->prepare("SELECT id, email, password FROM clients WHERE email = ?");
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $user = $result->fetch_assoc();
+
+            // Vérification du mot de passe
+            if (password_verify($password, $user['password'])) {
+                echo json_encode(["success" => true, "userId" => $user['id']]);
+            } else {
+                echo json_encode(["success" => false, "message" => "Identifiants incorrects"]);
+            }
+        } else {
+            echo json_encode(["success" => false, "message" => "Identifiants incorrects"]);
+        }
+
+        $stmt->close();
+    } else {
+        echo json_encode(["success" => false, "message" => "Méthode non autorisée"]);
+    }
+} catch (Exception $e) {
+    // Gestion des erreurs serveur
+    echo json_encode(["success" => false, "message" => "Une erreur est survenue. Veuillez réessayer plus tard."]);
+} finally {
     $conn->close();
-} else {
-    echo json_encode(["success" => false, "message" => "Méthode non autorisée"]);
 }
-<<<<<<< HEAD
-?>
-=======
->>>>>>> refs/remotes/origin/main

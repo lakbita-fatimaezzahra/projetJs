@@ -1,7 +1,6 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
-import { Link } from 'react-router-dom';
 import axios from "axios";
 import "./style.css";
 
@@ -9,6 +8,7 @@ export default function CartScreen() {
     const { cartItems, updateQuantity, removeItem } = useContext(CartContext);
     const navigate = useNavigate();
     const userId = localStorage.getItem("userId");
+  
 
     // Vérification si l'utilisateur est connecté
     useEffect(() => {
@@ -21,65 +21,6 @@ export default function CartScreen() {
         (sum, item) => sum + item.prices[0][item.varient] * item.quantite,
         0
     );
-
-<<<<<<< HEAD
-    const submitOrder = async () => {
-        const order = {
-            userId,
-            total,
-            items: cartItems.map((item) => ({
-                pizzaId: item.id,
-                variant: item.varient,
-                quantity: item.quantite,
-                price: item.prices[0][item.varient],
-            })),
-        };
-
-        try {
-            const response = await axios.post("http://localhost/emsi/projetJs/firstapp/back_end/add_to_cart.php", order);
-
-            if (response.data.success) {
-                alert("Commande validée avec succès !");
-                navigate("/"); // Redirige vers la page d'accueil après la commande réussie
-            } else {
-                alert("Erreur lors de la validation de la commande.");
-=======
-    const handleValidation = () => {
-        if (isUserLoggedIn) {
-            submitOrder();
-        } else {
-            setShowLogin(true);
-        }
-    };
-
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        const email = e.target.email.value; // Remplacez 'username' par 'email'
-        const password = e.target.password.value;
-    
-        try {
-            const response = await axios.post("http://localhost/emsi/projetJs/firstapp/back_end/login.php", {
-                email, // Utilisez 'email' ici
-                password,
-            });
-            
-            if (response.data.success) {
-                setIsUserLoggedIn(true);
-                setUserId(response.data.userId);
-                setShowLogin(false);
-                alert("Connexion réussie ! Vous pouvez valider votre commande.");
-            } else {
-                alert("Échec de la connexion. Veuillez vérifier vos identifiants.");
-               
->>>>>>> refs/remotes/origin/main
-            }
-        } catch (error) {
-            console.error("Erreur:", error);
-            alert("Une erreur s'est produite, veuillez réessayer.");
-        }
-    };
-    
-
     return (
         <div style={{ marginTop: "90px", marginBottom: "40px" }}>
             <div className="cart-container">
@@ -135,38 +76,11 @@ export default function CartScreen() {
                 ))}
 
                 <div className="cart-total">Total : &euro; {total.toFixed(2)}</div>
-                <button className="checkout-btn" onClick={submitOrder}>
+                <button className="checkout-btn" >
                     Validation
                 </button>
-<<<<<<< HEAD
-=======
 
-                {showLogin && (
-                    <div className="login-modal">
-                        <h2>Connexion requise</h2>
-                        <form onSubmit={handleLogin}>
-                            <input
-                                type="text"
-                                placeholder="Email"
-                                required
-                                className="login-input"
-                                name='email'
-                            />
-                            <input
-                                type="password"
-                                placeholder="Mot de passe"
-                                required
-                                className="login-input"
-                                name='password'
-                            />
-                            <button type="submit" className="login-btn">
-                                Se connecter
-                            </button>
-                            
-                        </form>
-                    </div>
-                )}
->>>>>>> refs/remotes/origin/main
+              
             </div>
         </div>
     );

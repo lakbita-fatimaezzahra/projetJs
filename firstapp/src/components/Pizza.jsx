@@ -56,34 +56,18 @@ export default function Pizza({ pizza, showConfirmation }) {
             </div>
 
             <div className="flex-container text-start">
-<<<<<<< HEAD
-    <div className="m-2 w-40">
-        <p>Prix: {pizza.prices[0][varient] * quantite}$</p>
-    </div>
-    <div className=" w-60">
-        <button
-            className="btn"
-            onClick={() => addToCart(pizza, varient, quantite)}
-        >
-            Ajouter au panier
-        </button>
-    </div>
-</div>
-
-=======
-                <div className="m-2 w-100">
+                <div className="m-2 w-40">
                     <p>Prix: {pizza.prices[0][varient] * quantite}$</p>
                 </div>
-                <div className="m-1 w-100">
+                <div className="w-60">
                     <button
                         className="btn"
-                        onClick={handleAddToCart} // Utilisation de la nouvelle fonction
+                        onClick={handleAddToCart} // Utilisation de la fonction handleAddToCart
                     >
                         Ajouter au panier
                     </button>
                 </div>
             </div>
->>>>>>> refs/remotes/origin/main
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>

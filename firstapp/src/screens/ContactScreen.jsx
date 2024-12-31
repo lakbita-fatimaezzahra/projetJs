@@ -9,14 +9,8 @@ export default function ContactScreen() {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate(); // Utilisez 'useNavigate' pour la redirection
 
-<<<<<<< HEAD
-export default function ContactScreen() {
-   return(
-     <div style={{ marginTop: '90px',marginBottom:'40px' }}>
-=======
   const handleSubmit = (event) => {
     event.preventDefault(); // Empêche la soumission par défaut
->>>>>>> refs/remotes/origin/main
 
     // Validation des champs
     const newErrors = {};

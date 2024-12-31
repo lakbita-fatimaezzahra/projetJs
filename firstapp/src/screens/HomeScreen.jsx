@@ -72,17 +72,6 @@ export default function HomeScreen() {
     }
 
     return (
-<<<<<<< HEAD
-        <div style={{  marginBottom: "40px" }}>
-            {/* Image Section */}
-            <div className="" >
-                <img 
-                    src={Image}
-                    alt="Delicious Pizza" 
-                      />
-               
-            </div>
-=======
         <div style={{ marginTop: "90px", marginBottom: "40px" }}>
             {/* Affichage du message de confirmation en haut */}
             {confirmationMessage && (
@@ -90,7 +79,15 @@ export default function HomeScreen() {
                     {confirmationMessage}
                 </div>
             )}
->>>>>>> refs/remotes/origin/main
+
+            {/* Image Section */}
+            <div>
+                <img 
+                    src={Image}
+                    alt="Delicious Pizza" 
+                    style={{ width: '100%', height: 'auto' }}
+                />
+            </div>
 
             {/* Barre de recherche et sélection de catégorie */}
             <Search onFilter={handleFilter} />
