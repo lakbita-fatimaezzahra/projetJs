@@ -14,6 +14,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute();
     $result = $stmt->get_result();
 
+    if (!isset($input['email']) || !isset($input['password'])) {
+        echo json_encode(["success" => false, "message" => "Données manquantes"]);
+        exit;
+    }
+    
     if ($result->num_rows > 0) {
         // Connexion réussie, retourner l'id de l'utilisateur
         $user = $result->fetch_assoc();

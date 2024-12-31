@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { CartContext } from "../context/CartContext";
+import { Link } from 'react-router-dom';
 import axios from "axios";
 import "./style.css";
 
@@ -24,28 +25,29 @@ export default function CartScreen() {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        const username = e.target.username.value;
+        const email = e.target.email.value; // Remplacez 'username' par 'email'
         const password = e.target.password.value;
-
+    
         try {
             const response = await axios.post("http://localhost/emsi/projetJs/firstapp/back_end/login.php", {
-                username,
+                email, // Utilisez 'email' ici
                 password,
             });
-           
+            
             if (response.data.success) {
-              
                 setIsUserLoggedIn(true);
                 setUserId(response.data.userId);
                 setShowLogin(false);
                 alert("Connexion réussie ! Vous pouvez valider votre commande.");
             } else {
                 alert("Échec de la connexion. Veuillez vérifier vos identifiants.");
+               
             }
         } catch (error) {
             console.error("Erreur:", error);
         }
     };
+    
 
     const submitOrder = async () => {
       const order = {
@@ -154,6 +156,7 @@ export default function CartScreen() {
                             <button type="submit" className="login-btn">
                                 Se connecter
                             </button>
+                            
                         </form>
                     </div>
                 )}
