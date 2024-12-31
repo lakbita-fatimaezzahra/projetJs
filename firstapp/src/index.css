@@ -25,6 +25,8 @@ h2{
 .btn{
   background-color: red !important;
   color: azure !important;
+  width: 4cm !important;
+
 }
 .card{
   border-radius: 10px !important;
@@ -86,3 +88,14 @@ input{
 
 }
 
+.flex-container {
+  display: flex;
+  justify-content: space-between; /* Adds space between the items */
+  align-items: center; /* Centers the items vertically */
+  width: 100% !important;
+}
+
+.w-50 {
+  width: 50%;
+  padding: 5px;
+}

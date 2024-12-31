@@ -1,5 +1,6 @@
 <?php
 include('connection.php');
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $input = json_decode(file_get_contents("php://input"), true);
 
@@ -8,17 +9,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $input['password'];
 
     // Vérifier si l'utilisateur existe
-    $stmt = $conn->prepare("SELECT id, email FROM clients WHERE email = ? AND password = ?");
-    $stmt->bind_param("ss", $username, $password);
+    $stmt = $conn->prepare("SELECT id, email, password FROM clients WHERE email = ?");
+    $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
-        // Connexion réussie, retourner l'id de l'utilisateur
         $user = $result->fetch_assoc();
-        echo json_encode(["success" => true, "userId" => $user['id']]);
+        
+        // Vérifier le mot de passe avec password_verify
+        if (password_verify($password, $user['password'])) {
+            // Connexion réussie, retourner l'id de l'utilisateur
+            echo json_encode(["success" => true, "userId" => $user['id']]);
+        } else {
+            // Mot de passe incorrect
+            echo json_encode(["success" => false, "message" => "Mot de passe incorrect"]);
+        }
     } else {
-        // Utilisateur ou mot de passe incorrect
+        // Utilisateur introuvable
         echo json_encode(["success" => false, "message" => "Identifiants incorrects"]);
     }
 
@@ -27,3 +35,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     echo json_encode(["success" => false, "message" => "Méthode non autorisée"]);
 }
+?>

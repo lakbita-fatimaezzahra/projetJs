@@ -3,7 +3,7 @@ import './styleContact.css';
 import { Link } from 'react-router-dom';
 
 
-export default function CartScreen() {
+export default function ContactScreen() {
    return(
      <div style={{ marginTop: '90px',marginBottom:'40px' }}>
 

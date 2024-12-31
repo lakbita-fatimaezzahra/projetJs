@@ -1,6 +1,14 @@
-.App {
-  text-align: center;
 
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; 
+  text-align: center;/* Ensures the body takes up the full height of the viewport */
 }
 
 .App-logo {
@@ -36,4 +44,11 @@
   to {
     transform: rotate(360deg);
   }
+}
+main {
+  flex: 1; /* Pushes the footer to the bottom if content is less than the viewport height */
+}
+
+footer {
+  margin-top: auto; /* Ensures footer is at the bottom of the page */
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'; 
 import Pizza from '../components/Pizza';
 import Search from '../components/Search';
+import Image from './images/shutterstock_594962792.jpg'
 import axios from 'axios';
 
 export default function HomeScreen() {
@@ -60,7 +61,16 @@ export default function HomeScreen() {
     }
 
     return (
-        <div style={{ marginTop: "90px", marginBottom: "40px" }}>
+        <div style={{  marginBottom: "40px" }}>
+            {/* Image Section */}
+            <div className="" >
+                <img 
+                    src={Image}
+                    alt="Delicious Pizza" 
+                      />
+               
+            </div>
+
             {/* Barre de recherche et sélection de catégorie */}
             <Search onFilter={handleFilter} />
 

@@ -51,18 +51,19 @@ export default function Pizza({ pizza }) {
             </div>
 
             <div className="flex-container text-start">
-                <div className="m-2 w-100">
-                    <p>Prix: {pizza.prices[0][varient] * quantite}$</p>
-                </div>
-                <div className="m-1 w-100">
-                    <button
-                        className="btn"
-                        onClick={() => addToCart(pizza, varient, quantite)}
-                    >
-                        Ajouter au panier
-                    </button>
-                </div>
-            </div>
+    <div className="m-2 w-40">
+        <p>Prix: {pizza.prices[0][varient] * quantite}$</p>
+    </div>
+    <div className=" w-60">
+        <button
+            className="btn"
+            onClick={() => addToCart(pizza, varient, quantite)}
+        >
+            Ajouter au panier
+        </button>
+    </div>
+</div>
+
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
@@ -75,7 +76,7 @@ export default function Pizza({ pizza }) {
                     <p>{pizza.description}</p>
                 </Modal.Body>
                 <Modal.Footer>
-                    <button className="btn" onClick={handleClose}>
+                    <button className="custom-btn" onClick={handleClose}>
                         Fermer
                     </button>
                 </Modal.Footer>
