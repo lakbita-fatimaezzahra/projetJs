@@ -139,10 +139,10 @@ export default function CartScreen() {
                         <form onSubmit={handleLogin}>
                             <input
                                 type="text"
-                                placeholder="Nom d'utilisateur"
+                                placeholder="Email"
                                 required
                                 className="login-input"
-                                name='username'
+                                name='email'
                             />
                             <input
                                 type="password"

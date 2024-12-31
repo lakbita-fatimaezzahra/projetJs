@@ -11,6 +11,8 @@ import ContactScreen from './screens/ContactScreen';
 import bootstrap from '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import RegisterScreen from './screens/RegisterScreen';
 import LoginScreen from './screens/LoginScreen';
+import ConfirmationPage from './screens/confirmationPage';
+
 
 import { CartProvider } from './context/CartContext';
 
@@ -25,6 +27,8 @@ function App() {
             <Route path="/cart" element={<CartScreen />} />
             <Route path="/About" element={<AboutScreen />} />
             <Route path="/Contact" element={<ContactScreen />} />
+            <Route path="/confirmation" element={<ConfirmationPage />} />
+
             <Route path="/register" element={<RegisterScreen />} />
             <Route path="/login" element={<LoginScreen />} />
           </Routes>

@@ -1,8 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext } from 'react'; 
 import { Modal } from 'react-bootstrap';
 import { CartContext } from '../context/CartContext';
 
-export default function Pizza({ pizza }) {
+export default function Pizza({ pizza, showConfirmation }) {
     const [quantite, setQuantite] = useState(1);
     const [varient, setVarient] = useState("Petite");
     const [show, setShow] = useState(false);
@@ -11,6 +11,11 @@ export default function Pizza({ pizza }) {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const handleAddToCart = () => {
+        addToCart(pizza, varient, quantite);
+        showConfirmation(pizza.Nom_Pizza); // Appel de la fonction de confirmation
+    };
 
     return (
         <div style={{ margin: "50px" }} className="shadow-lg p-3 mb-5 bg-white rounded">
@@ -57,7 +62,7 @@ export default function Pizza({ pizza }) {
                 <div className="m-1 w-100">
                     <button
                         className="btn"
-                        onClick={() => addToCart(pizza, varient, quantite)}
+                        onClick={handleAddToCart} // Utilisation de la nouvelle fonction
                     >
                         Ajouter au panier
                     </button>

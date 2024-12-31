@@ -1,15 +1,16 @@
-<?php
+<?php 
 include('connection.php');
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $input = json_decode(file_get_contents("php://input"), true);
 
     // Récupérer les informations de l'utilisateur
-    $username = $input['username'];
+    $email = $input['email']; // Correction : Utiliser "email"
     $password = $input['password'];
 
     // Vérifier si l'utilisateur existe
     $stmt = $conn->prepare("SELECT id, email FROM clients WHERE email = ? AND password = ?");
-    $stmt->bind_param("ss", $username, $password);
+    $stmt->bind_param("ss", $email, $password); // Vérifiez les colonnes email et password
     $stmt->execute();
     $result = $stmt->get_result();
 

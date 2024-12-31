@@ -8,6 +8,7 @@ export default function HomeScreen() {
     const [filteredPizzas, setFilteredPizzas] = useState([]); // Pizzas filtrées
     const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1); // Page actuelle
+    const [confirmationMessage, setConfirmationMessage] = useState(''); // État pour le message de confirmation
     const pizzasPerPage = 2; // Nombre de pizzas par page
 
     useEffect(() => {
@@ -45,6 +46,16 @@ export default function HomeScreen() {
         setCurrentPage(1); // Réinitialiser la page à 1 quand un filtre est appliqué
     };
 
+    // Fonction pour afficher le message de confirmation
+    const showConfirmation = (pizzaName) => {
+        setConfirmationMessage(`La pizza ${pizzaName} a été ajoutée au panier !`);
+
+        // Supprimer le message après 3 secondes
+        setTimeout(() => {
+            setConfirmationMessage('');
+        }, 3000);
+    };
+
     // Calculer les pizzas à afficher en fonction de la page actuelle
     const indexOfLastPizza = currentPage * pizzasPerPage;
     const indexOfFirstPizza = indexOfLastPizza - pizzasPerPage;
@@ -61,6 +72,13 @@ export default function HomeScreen() {
 
     return (
         <div style={{ marginTop: "90px", marginBottom: "40px" }}>
+            {/* Affichage du message de confirmation en haut */}
+            {confirmationMessage && (
+                <div style={{ textAlign: "center", color: 'green', fontWeight: 'bold', marginBottom: '20px' }}>
+                    {confirmationMessage}
+                </div>
+            )}
+
             {/* Barre de recherche et sélection de catégorie */}
             <Search onFilter={handleFilter} />
 
@@ -68,7 +86,7 @@ export default function HomeScreen() {
             <div className="row">
                 {currentPizzas.map((pizza) => (
                     <div key={pizza.id} className="col-md-4 p-3">
-                        <Pizza pizza={pizza} />
+                        <Pizza pizza={pizza} showConfirmation={showConfirmation} />
                     </div>
                 ))}
             </div>

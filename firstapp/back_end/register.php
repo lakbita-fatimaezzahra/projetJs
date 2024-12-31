@@ -1,48 +1,69 @@
-<?php
+<?php 
 include('connection.php');
 
-header('Content-Type: application/json'); // Spécifiez que la réponse est en JSON
-
 if (!empty($_POST)) {
-    // Validation des champs
+    // Validation des champs avec regex
     $name = trim($_POST['name']);
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
+    $confirm_password = trim($_POST['confirm_password']);
 
-    if (empty($name) || !preg_match('/^[a-zA-Z\s]+$/', $name)) {
-        echo json_encode(['success' => false, 'message' => 'Nom invalide. Il ne doit contenir que des lettres.']);
+    $email_regex = "/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/";
+
+    // Vérification du format de l'email
+    if (!preg_match($email_regex, $email)) {
+        echo json_encode(["success" => false, "message" => "L'adresse email n'est pas valide."]);
         exit;
     }
 
-    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo json_encode(['success' => false, 'message' => 'Adresse email invalide.']);
+    // Vérification de la longueur du mot de passe
+    if (strlen($password) < 8) {
+        echo json_encode(["success" => false, "message" => "Le mot de passe doit contenir au moins 8 caractères."]);
         exit;
     }
 
-    if (empty($password) || strlen($password) < 8) {
-        echo json_encode(['success' => false, 'message' => 'Le mot de passe doit contenir au moins 8 caractères.']);
+    // Vérification de la correspondance des mots de passe
+    if ($password !== $confirm_password) {
+        echo json_encode(["success" => false, "message" => "Les mots de passe ne correspondent pas."]);
         exit;
     }
 
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    // Vérifier si l'email est déjà utilisé
+    $check_sql = "SELECT id FROM clients WHERE email = ?";
+    $check_stmt = $conn->prepare($check_sql);
+    $check_stmt->bind_param('s', $email);
+    $check_stmt->execute();
+    $check_stmt->store_result();
 
-    $sql = "INSERT INTO clients (name, email, password) VALUES (:name, :email, :password)";
-    $stmt = $pdo->prepare($sql);
+    if ($check_stmt->num_rows > 0) {
+        echo json_encode(["success" => false, "message" => "Cet email est déjà utilisé."]);
+        $check_stmt->close();
+        exit;
+    }
 
-    $stmt->bindParam(':name', $name);
-    $stmt->bindParam(':email', $email);
-    $stmt->bindParam(':password', $hashed_password);
+    $check_stmt->close();
 
-    try {
-        $stmt->execute();
-        echo json_encode(['success' => true, 'message' => "L'utilisateur a été ajouté avec succès !"]);
-    } catch (PDOException $e) {
-        if ($e->getCode() == 23000) {
-            echo json_encode(['success' => false, 'message' => 'Cet email est déjà utilisé.']);
+    // Insérer l'utilisateur dans la base de données
+    $sql = "INSERT INTO clients (name, email, password) VALUES (?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+
+    if ($stmt) {
+        $stmt->bind_param('sss', $name, $email, $password);
+
+        if ($stmt->execute()) {
+            // Succès : utilisateur ajouté
+            echo json_encode(["success" => true, "message" => "Utilisateur ajouté avec succès !"]);
         } else {
-            echo json_encode(['success' => false, 'message' => "Une erreur s'est produite : " . $e->getMessage()]);
+            // Échec de l'insertion
+            echo json_encode(["success" => false, "message" => "Erreur lors de l'ajout de l'utilisateur : " . $stmt->error]);
         }
+
+        $stmt->close();
+    } else {
+        echo json_encode(["success" => false, "message" => "Erreur lors de la préparation de la requête : " . $conn->error]);
     }
+
+    $conn->close();
 }
 
 ?>
