@@ -42,7 +42,7 @@ export default function Navbar() {
                 return { success: true, message: "Connexion réussie !" };
             } else {
                 setErrorMessage(data.message || "Identifiants incorrects");
-            
+                setRegisterMessage(" ");
             }
         })
         .catch((error) => {
@@ -66,7 +66,8 @@ export default function Navbar() {
                 if (response.data.success) {  
                     setRegisterMessage(response.data.message);
                     setShowRegisterModal(false);
-                    setShowLoginModal(true);  // Ouvrir le modal de connexion après l'inscription
+                    setShowLoginModal(true); 
+                    setErrorMessage(" "); // Ouvrir le modal de connexion après l'inscription
                 } else {
                     setRegisterMessage(response.data.message );  // Affichage du message d'erreur
                 }

@@ -1,14 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./customer.css";
 
 export default function CustomerForm() {
     const [formData, setFormData] = useState({
-        name: "",
-        email: "",
         address: "",
         phone: ""
     });
+    const [clientId, setClientId] = useState(null); // ID du client connecté
+
+    // Récupérer l'ID du client stocké dans le localStorage
+    useEffect(() => {
+        const userId = localStorage.getItem("userId");
+        if (userId) {
+            setClientId(userId);
+        } else {
+            alert("Veuillez vous connecter avant de soumettre le formulaire.");
+        }
+    }, []);
 
     const handleChange = (e) => {
         setFormData({
@@ -20,10 +29,29 @@ export default function CustomerForm() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // Envoyer les données via Axios
-        axios.post('http://localhost/emsi/projetJs/firstapp/back_end/form.php', formData)
+        if (!clientId) {
+            alert("Utilisateur non connecté.");
+            return;
+        }
+
+        // Vérifier que le téléphone contient bien 10 chiffres
+        const phonePattern = /^\d{10}$/;
+        if (!phonePattern.test(formData.phone)) {
+            alert("Le numéro de téléphone doit contenir exactement 10 chiffres.");
+            return;
+        }
+
+        // Ajouter l'ID du client et les informations supplémentaires
+        const dataToSend = {
+            address: formData.address,
+            phone: formData.phone,
+            clientId: clientId
+        };
+
+        // Envoyer les données au backend via Axios
+        axios.post('http://localhost/emsi/projetJs/firstapp/back_end/form.php', dataToSend)
             .then(response => {
-                alert(response.data.success);
+                
                 if (response.data.success) {
                     alert("Commande validée avec succès !");
                     window.location.href = '/'; // Rediriger après la soumission réussie
@@ -32,36 +60,19 @@ export default function CustomerForm() {
                 }
             })
             .catch(error => {
-                console.error("Erreur lors de l'envoi des données:", error);
+             
                 alert("Une erreur est survenue.");
             });
     };
 
     return (
         <div style={{ marginTop: "90px", marginBottom: "40px" }}>
+
             
+ 
+
             <form onSubmit={handleSubmit} className="customer-form">
-            <h4>Votre informations:</h4>
-                <label>
-                    Nom :
-                    <input
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                    />
-                </label>
-                <label>
-                    Email :
-                    <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                    />
-                </label>
+            <h4>Informations pour livraison:</h4>
                 <label>
                     Adresse :
                     <input
@@ -73,13 +84,15 @@ export default function CustomerForm() {
                     />
                 </label>
                 <label>
-                    Téléphone :
+                    Téléphone (10 chiffres) :
                     <input
                         type="tel"
                         name="phone"
                         value={formData.phone}
                         onChange={handleChange}
                         required
+                        pattern="\d{10}" // Permet de valider que le téléphone contient bien 10 chiffres
+                        title="Le numéro de téléphone doit contenir 10 chiffres"
                     />
                 </label>
                 <button type="submit" className="submit-btn">
