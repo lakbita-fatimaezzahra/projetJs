@@ -1,0 +1,90 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+.customer-form {
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.customer-form h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.customer-form label {
+    display: block;
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: #555;
+}
+
+.customer-form input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.customer-form input:focus {
+    outline: none;
+    border-color: #ff1100;
+    box-shadow: 0 0 5px rgba(255, 60, 0, 0.5);
+}
+
+.submit-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #ff1100;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #ff1100;
+}
+
+.submit-btn:active {
+    background-color: #ff1100;
+}
+
+.customer-form input::placeholder {
+    color: #aaa;
+}
+
+.customer-form input[type="tel"],
+.customer-form input[type="email"],
+.customer-form input[type="text"] {
+    font-family: 'Arial', sans-serif;
+}
+
+@media (max-width: 600px) {
+    .customer-form {
+        padding: 15px;
+    }
+
+    .customer-form h1 {
+        font-size: 22px;
+    }
+
+    .submit-btn {
+        font-size: 16px;
+    }
+}

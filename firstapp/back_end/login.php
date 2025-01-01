@@ -1,6 +1,6 @@
 <?php
 include('connection.php');
-
+session_start();
 try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $input = json_decode(file_get_contents("php://input"), true);
@@ -25,6 +25,7 @@ try {
 
             // Vérification du mot de passe
             if (password_verify($password, $user['password'])) {
+                $_SESSION['id']=$user['id'];
                 echo json_encode(["success" => true, "userId" => $user['id']]);
             } else {
                 echo json_encode(["success" => false, "message" => "Identifiants incorrects"]);

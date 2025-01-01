@@ -44,7 +44,7 @@ export default function ContactScreen() {
   return (
     <div style={{ marginTop: '90px', marginBottom: '40px' }}>
       <div className="contact-form">
-        <h1>Contactez-nous</h1>
+        <h4>Contactez-nous</h4>
 
         <form onSubmit={handleSubmit}>
           <div className="form-field">

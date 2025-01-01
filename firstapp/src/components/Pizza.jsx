@@ -4,7 +4,7 @@ import { CartContext } from '../context/CartContext';
 
 export default function Pizza({ pizza, showConfirmation }) {
     const [quantite, setQuantite] = useState(1);
-    const [varient, setVarient] = useState("Petite");
+    const [varient, setVarient] = useState("Small");
     const [show, setShow] = useState(false);
 
     const { addToCart } = useContext(CartContext);
@@ -18,11 +18,15 @@ export default function Pizza({ pizza, showConfirmation }) {
     };
 
     return (
-        <div style={{ margin: "50px" }} className="shadow-lg p-3 mb-5 bg-white rounded">
+        <div style={{ marginLeft: "50px", marginRight:"50px", marginBottom:"50px" }} className="shadow-lg p-3 mb-5 bg-white rounded">
             <div onClick={handleShow}>
                 <h2>{pizza.Nom_Pizza}</h2>
-                <img src={pizza.image} alt={pizza.Nom_Pizza} className="img-fluid" style={{ width: "190px", height: "190px" }} />
-            </div>
+                <img 
+            src={pizza.image} 
+            alt={pizza.Nom_Pizza} 
+            className="img-fluid" 
+            style={{ width: "190px", height: "190px", margin: "0 auto", display: "block" }} 
+        /> </div>
             <div className="flex-container text-start">
                 <div className="w-100 m-1">
                     <p>Taille</p>

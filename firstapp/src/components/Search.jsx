@@ -23,15 +23,21 @@ export default function Search({ onFilter }) {
  
  {/* Sélection de la catégorie */}
  <select
-                className="form-select mt-1"
+                className=" category-select  mt-1"
                 value={category}
                 onChange={handleCategoryChange}
                 style={{borderColor:'red'}}
-            >
-                <option value="">Toutes les catégories</option>
-                <option value="Vegetarienne">Végétarienne</option>
+            >   <option value="">Toutes les catégories</option>
+               <option value="Végétarienne">Végétarienne</option>
+                <option value="Fruits_de_mer">Fruits de mer</option>
                 <option value="Viande">Viande</option>
-                <option value="Fruits de mer">Fruits de mer</option>
+                <option value="Spéciale">Spéciale</option>
+                <option value="Classique">Classique</option>
+                <option value="Exotique">Exotique</option>
+                <option value="Saison">Saison</option>
+                <option value="Gourmande">Gourmande</option>
+                <option value="Bio">Bio</option>
+                <option value="Sans_gluten">Sans gluten</option>
                 {/* Ajouter d'autres catégories selon vos données */}
             </select>
  

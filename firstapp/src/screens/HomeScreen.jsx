@@ -10,7 +10,7 @@ export default function HomeScreen() {
     const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1); // Page actuelle
     const [confirmationMessage, setConfirmationMessage] = useState(''); // État pour le message de confirmation
-    const pizzasPerPage = 2; // Nombre de pizzas par page
+    const pizzasPerPage = 6; // Nombre de pizzas par page
 
     useEffect(() => {
         // Récupérer les pizzas depuis le backend
@@ -72,7 +72,7 @@ export default function HomeScreen() {
     }
 
     return (
-        <div style={{ marginTop: "90px", marginBottom: "40px" }}>
+        <div style={{ marginTop: "70px", marginBottom: "40px" }}>
         {/* Affichage du message de confirmation en haut */}
     
         {/* Image Section avec texte à gauche */}
@@ -81,9 +81,9 @@ export default function HomeScreen() {
                 src={Image}
                 alt="Delicious Pizza" 
                 style={{ 
-                    height: '90%', 
+                    height: '400px', 
                     width: '100%', 
-                    marginBottom: '2cm',
+                    marginBottom: '1cm',
                     position: 'cover',
                     display: 'block',
                     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)' // Ombre autour de l'image
@@ -100,7 +100,7 @@ export default function HomeScreen() {
                 fontWeight: 'bold',
                 textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' // Ombre pour améliorer la visibilité du texte
             }}>
-                Découvrez nos délicieuses pizzas !
+                Découvrez nos <b className="text-danger">Délicieuses</b> pizzas !
             </div>
         </div>
     

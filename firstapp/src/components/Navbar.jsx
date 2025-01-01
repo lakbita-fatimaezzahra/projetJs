@@ -55,21 +55,20 @@ export default function Navbar() {
         e.preventDefault();
     
         // Préparer les données du formulaire pour l'inscription
-        const formData = {
-            name: name,
-            username: username,
-            password: password
-        };
-    
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("username", username);
+        formData.append("password", password);
         // Envoi de la requête d'inscription
         axios.post("http://localhost/emsi/projetJS/firstapp/back_end/index.php", formData)
             .then((response) => {
-                if (response.data.success) {  // Vérification si l'inscription a réussi
+              
+                if (response.data.success) {  
                     setRegisterMessage(response.data.message);
                     setShowRegisterModal(false);
                     setShowLoginModal(true);  // Ouvrir le modal de connexion après l'inscription
                 } else {
-                    setRegisterMessage(response.data.message || "Erreur lors de l'inscription");  // Affichage du message d'erreur
+                    setRegisterMessage(response.data.message );  // Affichage du message d'erreur
                 }
             })
             .catch((error) => {
@@ -115,15 +114,15 @@ export default function Navbar() {
                         {!isUserLoggedIn() ? (
                             <>
                                 <li className="nav-item">
-                                    <button className="btn btn-outline-primary" onClick={() => setShowLoginModal(true)} style={{ border: "none", background: "none" }}>Login</button>
+                                    <button className="btn btn-outline-primary custom-btn ms-3" onClick={() => setShowLoginModal(true)} style={{ border: "none", background: "none" }}>Login</button>
                                 </li>
                                 <li className="nav-item">
-                                    <button className="btn btn-outline-success ms-3" onClick={() => setShowRegisterModal(true)} style={{ border: "none", background: "none" }}>Register</button>
+                                    <button className="btn btn-outline-success custom-btn ms-3" onClick={() => setShowRegisterModal(true)} style={{ border: "none", background: "none" }}>Register</button>
                                 </li>
                             </>
                         ) : (
                             <li className="nav-item">
-                                <button className="btn btn-outline-danger ms-3" onClick={handleLogout} style={{ border: "none", background: "none" }}>Logout</button>
+                                <button className="btn btn-outline-danger custom-btn ms-3" onClick={handleLogout} style={{ border: "none", background: "none" }}>Logout</button>
                             </li>
                         )}
                     </ul>

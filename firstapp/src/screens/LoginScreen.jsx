@@ -1,25 +1,38 @@
+
 import React, { useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-// Fonction pour vérifier si l'utilisateur est connecté
+// Fonction de validation pour un mot de passe sécurisé (min 8 caractères, et au moins une majuscule)
+const passwordRegex = /^(?=.*[A-Z]).{8,}$/;
+
 export const isUserLoggedIn = () => !!localStorage.getItem("userId");
 
-// Fonction de déconnexion
 export const logoutUser = () => {
     localStorage.removeItem("userId");
 };
 
-// Modal Login
 export function LoginModal({ show, handleClose, handleLogin, errorMessage, handleSwitchToRegister, username, setUsername, password, setPassword }) {
+    const [passwordError, setPasswordError] = useState("");
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (!passwordRegex.test(password)) {
+            setPasswordError("Le mot de passe doit contenir au moins 8 caractères et une lettre majuscule.");
+        } else {
+            setPasswordError("");
+            handleLogin(e);  // Appeler handleLogin si la validation réussie
+        }
+    };
+
     return (
         <Modal show={show} onHide={handleClose} centered>
             <Modal.Header closeButton>
                 <Modal.Title>Connexion</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <form onSubmit={handleLogin}>
+                <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label>Nom d'utilisateur</label>
                         <input
@@ -43,6 +56,7 @@ export function LoginModal({ show, handleClose, handleLogin, errorMessage, handl
                             required
                             name="password"
                         />
+                        {passwordError && <div className="text-danger mt-2">{passwordError}</div>}
                     </div>
                     <button type="submit" className="btn btn-primary mt-3 w-100">
                         Se connecter
@@ -60,15 +74,26 @@ export function LoginModal({ show, handleClose, handleLogin, errorMessage, handl
     );
 }
 
-// Modal Register
 export function RegisterModal({ show, handleClose, handleRegister, registerMessage, handleSwitchToLogin, name, setName, username, setUsername, password, setPassword }) {
+    const [passwordError, setPasswordError] = useState("");
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (!passwordRegex.test(password)) {
+            setPasswordError("Le mot de passe doit contenir au moins 8 caractères et une lettre majuscule.");
+        } else {
+            setPasswordError("");
+            handleRegister(e);  // Appeler handleRegister si la validation réussie
+        }
+    };
+
     return (
         <Modal show={show} onHide={handleClose} centered>
             <Modal.Header closeButton>
                 <Modal.Title>Inscription</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <form onSubmit={handleRegister}>
+                <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label>Nom</label>
                         <input
@@ -104,6 +129,7 @@ export function RegisterModal({ show, handleClose, handleRegister, registerMessa
                             required
                             name="password"
                         />
+                        {passwordError && <div className="text-danger mt-2">{passwordError}</div>}
                     </div>
                     <button type="submit" className="btn btn-primary mt-3 w-100">
                         S'inscrire
@@ -121,15 +147,21 @@ export function RegisterModal({ show, handleClose, handleRegister, registerMessa
     );
 }
 
-// LoginScreen Component
 export default function LoginScreen() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+    const [passwordError, setPasswordError] = useState('');
 
     const handleLogin = (event) => {
         event.preventDefault();
+        if (!passwordRegex.test(password)) {
+            setPasswordError("Le mot de passe doit contenir au moins 8 caractères et une lettre majuscule.");
+            return;
+        } else {
+            setPasswordError("");
+        }
 
         // Validation de base
         if (!email || !password) {
@@ -145,9 +177,8 @@ export default function LoginScreen() {
             .post('http://localhost/emsi/projetJs/firstapp/back_end/login.php', { email, password })
             .then((response) => {
                 if (response.data.success) {
-                    // Stocker le token ou rediriger l'utilisateur après connexion réussie
                     alert("Connexion réussie !");
-                    navigate('/dashboard'); // Changez '/dashboard' avec la route de la page principale après connexion
+                    navigate('/dashboard');
                 } else {
                     setError(response.data.message || "Email ou mot de passe invalide.");
                 }
@@ -182,6 +213,7 @@ export default function LoginScreen() {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)} // Mise à jour de l'état
                             />
+                            {passwordError && <div className="text-danger mt-2">{passwordError}</div>}
                             <button type="submit" className="btn btn-primary mt-3">Se connecter</button>
                             <div className="mt-3 text-center">
                                 <p>
