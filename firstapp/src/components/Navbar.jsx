@@ -23,60 +23,60 @@ export default function Navbar() {
             setShowLoginModal(true);
         }
     };
-    const handleLogin = async (e) => {
+    const handleLogin = (e) => {
         e.preventDefault(); // Prevent default form submission behavior
-    
-        try {
-            // Send JSON data, not FormData
-            const response = await axios.post("http://localhost/emsi/projetJS/firstapp/back_end/login.php", {
-                username,
-                password
-            });
-    
+        const userData={
+            username:username,
+            password:password
+        }
+        // Envoi de la requête d'authentification
+        axios.post("http://localhost/emsi/projetJS/firstapp/back_end/login.php", userData)
+        .then((response) => {
             const data = response.data;
-    
+            
+            // Vérification si la connexion est réussie
             if (data.success) {
                 localStorage.setItem("userId", data.userId);
-                setShowLoginModal(false); // Close the login modal
-                navigate("/cart"); // Redirect to the cart page
+                setShowLoginModal(false); // Fermer le modal de connexion
+                navigate("/cart"); // Rediriger vers la page du panier
                 return { success: true, message: "Connexion réussie !" };
             } else {
                 setErrorMessage(data.message || "Identifiants incorrects");
-                return { success: false, message: data.message || "Identifiants incorrects" };
+            
             }
-        } catch (error) {
+        })
+        .catch((error) => {
             setErrorMessage("Erreur de connexion au serveur");
-            return { success: false, message: "Erreur de connexion au serveur" };
-        }
+           
+        });
     };
     
-    const handleRegister = async (e) => {
+    const handleRegister = (e) => {
         e.preventDefault();
     
         // Préparer les données du formulaire pour l'inscription
-        const formData = new FormData();
-        formData.append("name", name);
-        formData.append("username", username);
-        formData.append("password", password);
+        const formData = {
+            name: name,
+            username: username,
+            password: password
+        };
     
-        try {
-            // Envoi de la requête d'inscription
-            const response = await axios.post("http://localhost/emsi/projetJS/firstapp/back_end/index.php", formData);
-            
-            if (response.data.success) {  // Vérification si l'inscription a réussi
-                setRegisterMessage(response.data.message);
-                setShowRegisterModal(false);
-                setShowLoginModal(true);  // Ouvrir le modal de connexion après l'inscription
-            } else {
-                setRegisterMessage(response.data.message || "Erreur lors de l'inscription");  // Affichage du message d'erreur
-            }
-        } catch (error) {
-            console.error("Erreur lors de l'inscription:", error);
-            setRegisterMessage("Erreur de connexion au serveur");  // Message en cas d'erreur serveur
-        }
+        // Envoi de la requête d'inscription
+        axios.post("http://localhost/emsi/projetJS/firstapp/back_end/index.php", formData)
+            .then((response) => {
+                if (response.data.success) {  // Vérification si l'inscription a réussi
+                    setRegisterMessage(response.data.message);
+                    setShowRegisterModal(false);
+                    setShowLoginModal(true);  // Ouvrir le modal de connexion après l'inscription
+                } else {
+                    setRegisterMessage(response.data.message || "Erreur lors de l'inscription");  // Affichage du message d'erreur
+                }
+            })
+            .catch((error) => {
+                setRegisterMessage("Erreur de connexion au serveur");  // Message en cas d'erreur serveur
+            });
     };
     
-
     const handleLogout = () => {
         logoutUser();
         alert("Vous avez été déconnecté avec succès.");
@@ -130,17 +130,7 @@ export default function Navbar() {
                 </div>
             </nav>
 
-            <LoginModal
-                show={showLoginModal}
-                handleClose={() => setShowLoginModal(false)}
-                handleLogin={handleLogin}
-                errorMessage={errorMessage}
-                handleSwitchToRegister={handleSwitchToRegister}
-                username={username}
-                setUsername={setUsername}
-                password={password}
-                setPassword={setPassword}
-            />
+     
 
 <LoginModal
     show={showLoginModal}

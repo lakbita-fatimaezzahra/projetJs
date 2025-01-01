@@ -23,7 +23,7 @@ export default function HomeScreen() {
                 setError(err.message);
                 alert(err.message);
             });
-    }, []);
+    },[]);
 
     // Fonction de filtrage combiné pour Search
     const handleFilter = (searchTerm, category) => {
@@ -73,51 +73,71 @@ export default function HomeScreen() {
 
     return (
         <div style={{ marginTop: "90px", marginBottom: "40px" }}>
-            {/* Affichage du message de confirmation en haut */}
-            {confirmationMessage && (
-                <div style={{ textAlign: "center", color: 'green', fontWeight: 'bold', marginBottom: '20px' }}>
-                    {confirmationMessage}
-                </div>
-            )}
-
-            {/* Image Section */}
-            <div>
-                <img 
-                    src={Image}
-                    alt="Delicious Pizza" 
-                    style={{ width: '100%', height: 'auto' }}
-                />
-            </div>
-
-            {/* Barre de recherche et sélection de catégorie */}
-            <Search onFilter={handleFilter} />
-
-            {/* Affichage des pizzas */}
-            <div className="row">
-                {currentPizzas.map((pizza) => (
-                    <div key={pizza.id} className="col-md-4 p-3">
-                        <Pizza pizza={pizza} showConfirmation={showConfirmation} />
-                    </div>
-                ))}
-            </div>
-
-            {/* Pagination */}
-            <div className="pagination" style={styles.paginationContainer}>
-                <ul className="pagination" style={styles.paginationList}>
-                    {pageNumbers.map(number => (
-                        <li key={number} className="page-item">
-                            <button 
-                                onClick={() => paginate(number)} 
-                                className="page-link" 
-                                style={styles.pageButton}
-                            >
-                                {number}
-                            </button>
-                        </li>
-                    ))}
-                </ul>
+        {/* Affichage du message de confirmation en haut */}
+    
+        {/* Image Section avec texte à gauche */}
+        <div style={{ position: 'relative' }}>
+            <img 
+                src={Image}
+                alt="Delicious Pizza" 
+                style={{ 
+                    height: '90%', 
+                    width: '100%', 
+                    marginBottom: '2cm',
+                    position: 'cover',
+                    display: 'block',
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)' // Ombre autour de l'image
+                }}
+            />
+            {/* Texte sur l'image */}
+            <div style={{
+                position: 'absolute',
+                top: '50%',
+                left: '20px', // Positionnement à gauche de l'image
+                transform: 'translateY(-50%)', // Centrage vertical du texte
+                color: 'white',
+                fontSize: '24px',
+                fontWeight: 'bold',
+                textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' // Ombre pour améliorer la visibilité du texte
+            }}>
+                Découvrez nos délicieuses pizzas !
             </div>
         </div>
+    
+        {/* Barre de recherche et sélection de catégorie */}
+        <Search onFilter={handleFilter} />
+        {confirmationMessage && (
+            <div style={{ textAlign: "center", color: 'green', fontWeight: 'bold', marginBottom: '20px' }}>
+                {confirmationMessage}
+            </div>
+        )}
+        {/* Affichage des pizzas */}
+        <div className="row">
+            {currentPizzas.map((pizza) => (
+                <div key={pizza.id} className="col-md-4 p-3">
+                    <Pizza pizza={pizza} showConfirmation={showConfirmation} />
+                </div>
+            ))}
+        </div>
+    
+        {/* Pagination */}
+        <div className="pagination" style={styles.paginationContainer}>
+            <ul className="pagination" style={styles.paginationList}>
+                {pageNumbers.map(number => (
+                    <li key={number} className="page-item">
+                        <button 
+                            onClick={() => paginate(number)} 
+                            className="page-link" 
+                            style={styles.pageButton}
+                        >
+                            {number}
+                        </button>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    </div>
+    
     );
 }
 

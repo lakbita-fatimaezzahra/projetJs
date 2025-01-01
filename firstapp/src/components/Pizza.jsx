@@ -14,7 +14,7 @@ export default function Pizza({ pizza, showConfirmation }) {
 
     const handleAddToCart = () => {
         addToCart(pizza, varient, quantite);
-        showConfirmation(pizza.Nom_Pizza); // Appel de la fonction de confirmation
+      showConfirmation(pizza.Nom_Pizza); // Appel de la fonction de confirmation
     };
 
     return (
