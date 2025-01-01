@@ -8,6 +8,8 @@ import HomeScreen from './screens/HomeScreen';
 import CartScreen from './screens/CartScreen';
 import AboutScreen from './screens/AboutScreen';
 import ContactScreen from './screens/ContactScreen';
+import CustomerForm from "./screens/CustomerForm";
+
 import bootstrap from '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 import LoginScreen from './screens/LoginScreen';
@@ -29,6 +31,9 @@ function App() {
             <Route path="/About" element={<AboutScreen />} />
             <Route path="/Contact" element={<ContactScreen />} />
             <Route path="/confirmation" element={<ConfirmationPage />} />
+            <Route path="/customer-info" element={<CustomerForm />} />
+
+
           </Routes>
 
           <Footer />

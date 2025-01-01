@@ -21,6 +21,14 @@ export default function CartScreen() {
         (sum, item) => sum + item.prices[0][item.varient] * item.quantite,
         0
     );
+
+    const handleCommander = () => {
+        if (cartItems.length === 0) {
+            alert("Votre panier est vide. Veuillez ajouter des articles avant de continuer.");
+        } else {
+            navigate("/customer-info"); 
+        }
+    };
     return (
         <div style={{ marginTop: "90px", marginBottom: "40px" }}>
             <div className="cart-container">
@@ -37,9 +45,6 @@ export default function CartScreen() {
                                 <div>
                                     <p className="name">{item.Nom_Pizza}</p>
                                 </div>
-                            </div>
-                            <div className="col">
-                                <p className="description">{item.description || "Description non disponible"}</p>
                             </div>
                             <div className="col">
                                 <p className="size">{item.varient}</p>
@@ -76,11 +81,9 @@ export default function CartScreen() {
                 ))}
 
                 <div className="cart-total">Total : &euro; {total.toFixed(2)}</div>
-                <button className="checkout-btn" >
-                    Validation
+                <button className="checkout-btn" onClick={handleCommander}>
+                    Commander
                 </button>
-
-              
             </div>
         </div>
     );
